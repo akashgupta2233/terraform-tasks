@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Task 3 - Terraform AWS + Vercel Showcase</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #d4fc79, #96e6a1); /* Green gradient */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .code-box {
+      background-color: #1e1e1e;
+      color: #e0e0e0;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+      max-width: 90%;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      margin-bottom: 30px;
+    }
+
+    pre {
+      margin: 0;
+    }
+
+    .images {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+
+    .images img {
+      width: 300px;
+      height: 200px;
+      border: 3px solid #333;
+      border-radius: 12px;
+      object-fit: cover;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .home-link {
+      background-color: white;
+      padding: 12px 24px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .home-link:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <h1>Task 3: AWS + Vercel Showcase</h1>
+
+  <div class="code-box">
+    <pre><code>Objective:
+Create AWS infrastructure using Terraform or AWS Console and showcase results via a webpage hosted on Vercel.
+
+Tools:
+- Terraform or AWS Console
+- Vercel (for web deployment)
+- Google Forms (for submission)
+
+Part 1: AWS Resource Setup
+1. Amazon EC2
+   - Launch a t2.micro instance (Amazon Linux 2)
+
+2. Amazon VPC
+   - Create a custom VPC with 1 public subnet + Internet Gateway
+
+3. AWS Lambda
+   - Deploy a basic "Hello World" function in Python
+
+4. Amazon S3
+   - Private bucket with versioning enabled
+
+5. Amazon EBS
+   - Attach 10GB EBS volume to EC2 instance
+
+6. Amazon RDS
+   - Launch MySQL db.t2.micro instance
+
+7. Amazon Athena
+   - Create a database/table from sample S3 data
+
+8. Amazon CloudWatch
+   - Alarm for EC2 CPU Utilization > 70%
+
+9. AWS CloudTrail
+   - Enable to monitor API activity
+
+10. AWS CloudFormation
+    - Deploy basic template to create EC2
+
+11. AWS CDK
+    - Provision an S3 bucket (TypeScript or Python)
+
+</code></pre>
+  </div>
+
+  <div class="images">
+    <img src="images/120.jpeg" alt="AWS Screenshot 10">
+    <img src="images/10.jpg" alt="AWS Screenshot 0">
+    <img src="images/70.jpg" alt="AWS Screenshot 1">
+    <img src="images/60.jpg" alt="AWS Screenshot 2">
+    <img src="images/100.jpg" alt="AWS Screenshot 3">
+    <img src="images/110.jpg" alt="AWS Screenshot 4">
+    <img src="images/170.jpeg" alt="AWS Screenshot 5">
+    <img src="images/160.jpg" alt="AWS Screenshot 6">
+  </div>
+
+  <a class="home-link" href="index.html">Go back to Home</a>
+</body>
+</html>
