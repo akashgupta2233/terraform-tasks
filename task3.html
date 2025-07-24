@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Task 3 - Terraform AWS + Vercel Showcase</title>
+  <meta charset="UTF-8" />
+  <title>Task 3 - AWS + Vercel Showcase</title>
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #d4fc79, #96e6a1); /* Green gradient */
+      background: linear-gradient(135deg, #d4fc79, #96e6a1);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -17,8 +17,16 @@
 
     h1 {
       color: #333;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
       text-align: center;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      width: 100%;
+      max-width: 1200px;
     }
 
     .code-box {
@@ -27,11 +35,8 @@
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
-      max-width: 90%;
-      overflow-x: auto;
       white-space: pre-wrap;
       word-break: break-word;
-      margin-bottom: 30px;
     }
 
     pre {
@@ -43,7 +48,7 @@
       gap: 20px;
       justify-content: center;
       flex-wrap: wrap;
-      margin-bottom: 30px;
+      margin: 40px 0;
     }
 
     .images img {
@@ -64,6 +69,7 @@
       color: #333;
       font-weight: bold;
       transition: transform 0.2s, box-shadow 0.2s;
+      margin-top: 20px;
     }
 
     .home-link:hover {
@@ -75,52 +81,115 @@
 <body>
   <h1>Task 3: AWS + Vercel Showcase</h1>
 
-  <div class="code-box">
-    <pre><code>Objective:
-Create AWS infrastructure using Terraform or AWS Console and showcase results via a webpage hosted on Vercel.
+  <div class="grid-container">
+    <div class="code-box"><pre><code>1. Amazon EC2
+resource "aws_instance" "example" {
+  ami           = "ami-0abcdef1234567890"
+  instance_type = "t2.micro"
+}</code></pre></div>
 
-Tools:
-- Terraform or AWS Console
-- Vercel (for web deployment)
-- Google Forms (for submission)
+    <div class="code-box"><pre><code>2. Amazon VPC
+resource "aws_vpc" "main" {
+  cidr_block = "10.0.0.0/16"
+}
+resource "aws_subnet" "public" {
+  vpc_id     = aws_vpc.main.id
+  cidr_block = "10.0.1.0/24"
+}
+resource "aws_internet_gateway" "gw" {
+  vpc_id = aws_vpc.main.id
+}</code></pre></div>
 
-Part 1: AWS Resource Setup
-1. Amazon EC2
-   - Launch a t2.micro instance (Amazon Linux 2)
+    <div class="code-box"><pre><code>3. AWS Lambda
+resource "aws_lambda_function" "hello" {
+  filename      = "lambda_function.zip"
+  function_name = "hello_lambda"
+  handler       = "lambda_function.lambda_handler"
+  runtime       = "python3.8"
+  role          = aws_iam_role.lambda_exec.arn
+}</code></pre></div>
 
-2. Amazon VPC
-   - Create a custom VPC with 1 public subnet + Internet Gateway
+    <div class="code-box"><pre><code>4. Amazon S3
+resource "aws_s3_bucket" "example" {
+  bucket = "my-versioned-private-bucket"
+  versioning {
+    enabled = true
+  }
+  acl = "private"
+}</code></pre></div>
 
-3. AWS Lambda
-   - Deploy a basic "Hello World" function in Python
+    <div class="code-box"><pre><code>5. Amazon EBS
+resource "aws_ebs_volume" "example" {
+  availability_zone = "us-east-1a"
+  size              = 10
+}
+resource "aws_volume_attachment" "ebs_att" {
+  device_name = "/dev/sdh"
+  volume_id   = aws_ebs_volume.example.id
+  instance_id = aws_instance.example.id
+}</code></pre></div>
 
-4. Amazon S3
-   - Private bucket with versioning enabled
+    <div class="code-box"><pre><code>6. Amazon RDS
+resource "aws_db_instance" "default" {
+  engine               = "mysql"
+  instance_class       = "db.t2.micro"
+  name                 = "mydb"
+  username             = "admin"
+  password             = "password"
+  allocated_storage    = 20
+  skip_final_snapshot  = true
+}</code></pre></div>
 
-5. Amazon EBS
-   - Attach 10GB EBS volume to EC2 instance
+    <div class="code-box"><pre><code>7. Amazon Athena
+resource "aws_athena_database" "sample" {
+  name   = "sampledb"
+  bucket = "my-athena-results"
+}</code></pre></div>
 
-6. Amazon RDS
-   - Launch MySQL db.t2.micro instance
+    <div class="code-box"><pre><code>8. Amazon CloudWatch
+resource "aws_cloudwatch_metric_alarm" "high_cpu" {
+  alarm_name          = "highCPU"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = "2"
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/EC2"
+  period              = "120"
+  statistic           = "Average"
+  threshold           = "70"
+  alarm_description   = "CPU > 70%"
+  dimensions = {
+    InstanceId = aws_instance.example.id
+  }
+}</code></pre></div>
 
-7. Amazon Athena
-   - Create a database/table from sample S3 data
+    <div class="code-box"><pre><code>9. AWS CloudTrail
+resource "aws_cloudtrail" "example" {
+  name                          = "example-trail"
+  s3_bucket_name                = "my-trail-logs"
+  include_global_service_events = true
+  is_multi_region_trail         = true
+  enable_log_file_validation    = true
+}</code></pre></div>
 
-8. Amazon CloudWatch
-   - Alarm for EC2 CPU Utilization > 70%
+    <div class="code-box"><pre><code>10. AWS CloudFormation
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  MyEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-0abcdef1234567890
+      InstanceType: t2.micro</code></pre></div>
 
-9. AWS CloudTrail
-   - Enable to monitor API activity
+    <div class="code-box"><pre><code>11. AWS CDK (Python)
+from aws_cdk import aws_s3 as s3, core
 
-10. AWS CloudFormation
-    - Deploy basic template to create EC2
-
-11. AWS CDK
-    - Provision an S3 bucket (TypeScript or Python)
-
-</code></pre>
+class S3BucketStack(core.Stack):
+  def __init__(self, scope: core.Construct, id: str, **kwargs):
+    super().__init__(scope, id, **kwargs)
+    s3.Bucket(self, "MyBucket")</code></pre></div>
   </div>
 
+  <!-- ✅ RETAINED IMAGE BLOCK -->
   <div class="images">
     <img src="images/120.jpeg" alt="AWS Screenshot 10">
     <img src="images/10.jpg" alt="AWS Screenshot 0">
