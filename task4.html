@@ -96,10 +96,65 @@ Provide ByteWave Solutions with a serverless and reliable web presence via AWS S
 </code></pre>
   </div>
 
+  <!-- Terraform Code -->
+  <div class="code-box">
+    <pre><code>provider "aws" {
+  region = "us-east-1"
+}
+
+resource "aws_s3_bucket" "website_bucket" {
+  bucket = "bytewave-website-ak"
+}
+
+resource "aws_s3_bucket_website_configuration" "website" {
+  bucket = aws_s3_bucket.website_bucket.id
+
+  index_document {
+    suffix = "index.html"
+  }
+}
+
+resource "aws_s3_bucket_public_access_block" "public_block" {
+  bucket = aws_s3_bucket.website_bucket.id
+
+  block_public_acls       = true
+  block_public_policy     = false
+  ignore_public_acls      = true
+  restrict_public_buckets = false
+}
+
+resource "aws_s3_bucket_policy" "website_policy" {
+  bucket = aws_s3_bucket.website_bucket.id
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Sid       = "PublicReadGetObject",
+      Effect    = "Allow",
+      Principal = "*",
+      Action    = "s3:GetObject",
+      Resource  = "${aws_s3_bucket.website_bucket.arn}/*"
+    }]
+  })
+}
+
+resource "aws_s3_object" "index" {
+  bucket = aws_s3_bucket.website_bucket.id
+  key    = "index.html"
+  source = "${path.module}/index.html"
+  content_type = "text/html"
+  acl    = "public-read"
+}
+
+output "website_url" {
+  value = aws_s3_bucket_website_configuration.website.website_endpoint
+}</code></pre>
+  </div>
+
   <div class="images">
     <img src="images/150.jpg" alt="S3 Website Screenshot 1">
     <img src="images/160.jpg" alt="S3 Website Screenshot 2">
-    <img src="images/170.jpeg" alt="S3 Website Screenshot 2">
+    <img src="images/170.jpeg" alt="S3 Website Screenshot 3">
   </div>
 
   <a class="home-link" href="index.html">Go back to Home</a>
